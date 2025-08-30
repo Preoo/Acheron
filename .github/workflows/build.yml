@@ -1,0 +1,33 @@
+name: XMake
+
+on:
+  workflow_dispatch:
+  #push:
+  #  branches: [ "master" ]
+  #pull_request:
+  #  branches: [ "master" ]
+  #release:
+  #  types: [created]
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+      - name: Setup
+        uses: xmake-io/github-action-setup-xmake@v1
+        with:
+          xmake-version: latest
+  
+      - name: Build
+        run: xmake f -m release --skyrim_ae=y --compile=n --copy_to_papyrus=n --policies=build.ccache:y
+
+      - name: Upload a build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: "Acheron"
+          path: ${{github.workspace}}/
+          retention-days: 3
