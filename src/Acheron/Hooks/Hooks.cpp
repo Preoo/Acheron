@@ -368,7 +368,15 @@ namespace Acheron
 	float Hooks::FallAndPhysicsDamage(RE::Actor* a_this, float a_fallDistance, float a_defaultMult)
 	{
 		float dmg = _FallAndPhysicsDamage(a_this, a_fallDistance, a_defaultMult);
-		if (dmg <= 0.0f)
+		// if (dmg <= 0.0f)
+        // shortcircuit fall and physics damage since it makes no sense to me
+        // that world damage could defeat. Additionally this led to issues with
+        // mods that add traps since those would now defeat the player and leave
+        // 'em in a state where it makes no sense to "revive" leading to
+        // non-immersive reload. Traps such as spike trap in a hole is one
+        // example of this. Also this would mess up the fall death for "diving"
+        // mod.
+		if (true)
 			return dmg;
 		float adj_dmg = dmg;
 		AdjustByDifficultyMult(adj_dmg, a_this->IsPlayerRef(), MoveFinish);
