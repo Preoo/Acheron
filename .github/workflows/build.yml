@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v5
         # with:
         #  submodules: recursive
-    
+
       - name: Checkout submodules at latest commit
         run: git submodule update --init --recursive --remote --merge
 
@@ -29,15 +29,15 @@ jobs:
           actions-cache-key: 'acheron-ci'
           build-cache: true
           build-cache-key: 'acheron-ci'
-  
+
       - name: Build config
         run: xmake f -m release -y --skyrim_ae=y --compile=n --copy_to_papyrus=n --policies=build.ccache:y
-      
+
       - name: Build
         run: xmake -y
 
       - name: Print contents for debugging
-        run: ls -al ${{github.workspace}}
+        run: ls ${{github.workspace}}
 
       - name: Upload a build artifact
         uses: actions/upload-artifact@v4
