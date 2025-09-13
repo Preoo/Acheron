@@ -132,7 +132,7 @@ namespace Acheron
 	void ToggleControls(RE::ControlMap* controlMap, RE::ControlMap::UEFlag a_flags, bool a_enable)
 	{
 #ifdef SKYRIM_SUPPORT_AE
-		if (REL::Module::get().version().compare(SKSE::RUNTIME_1_6_1130) == std::strong_ordering::less) {
+		if (REL::Module::get().version().compare(SKSE::RUNTIME_SSE_1_6_1130) == std::strong_ordering::less) {
 			ToggleControls_ae_pre1130(controlMap, a_flags, a_enable);
 			return;
 		}
@@ -150,7 +150,7 @@ namespace Acheron
 	bool IsMovementControlsEnabled(RE::ControlMap* controlMap)
 	{
 #ifdef SKYRIM_SUPPORT_AE
-		if (REL::Module::get().version().compare(SKSE::RUNTIME_1_6_1130) == std::strong_ordering::less) {
+		if (REL::Module::get().version().compare(SKSE::RUNTIME_SSE_1_6_1130) == std::strong_ordering::less) {
 			return IsControlsFlagEnabled_ae_pre1130(controlMap, RE::ControlMap::UEFlag::kMovement);
 		}
 #endif
