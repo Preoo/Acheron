@@ -197,7 +197,9 @@ namespace Acheron
 
 	bool Validation::ValidateActor(RE::Actor* a_actor)
 	{
-		if (a_actor->IsChild()) {
+        // @NOTE: getting defeated while swimming breaks most things, so just
+        // skip that scenario
+		if (a_actor->IsChild() || a_actor->IsSwimming()) {
 			return false;
 		}
 		const auto furnihandle = a_actor->GetOccupiedFurniture();
