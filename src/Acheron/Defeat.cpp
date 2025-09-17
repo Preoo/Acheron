@@ -83,13 +83,13 @@ namespace Acheron
 			}
 		}
 		const auto health = a_victim->GetActorValue(RE::ActorValue::kHealth);
-		// a_victim->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, RE::ActorValue::kHealth, -health + 0.05f);
-        // commonlib changed this method and build broke
-		a_victim->RestoreActorValue(RE::ActorValue::kHealth, -health + 0.05f);
+		const auto restored_health = -health + 0.05f;
+		a_victim->RestoreActorValue(RE::ActorValue::kHealth, restored_health);
+		const auto health_after = a_victim->GetActorValue(RE::ActorValue::kHealth);
 
 		data->state.store(VictimState::Defeated);
 
-		logger::info("{:X} ({}) has been defeated", a_victim->GetFormID(), a_victim->GetDisplayFullName());
+		logger::info("{:X} ({}) has been defeated, ({}) -({})-> ({})", a_victim->GetFormID(), a_victim->GetDisplayFullName(), health, restored_health, health_after);
 		Serialization::EventManager::GetSingleton()->_actordefeated.QueueEvent(a_victim);
 	}
 
