@@ -83,14 +83,15 @@ namespace Acheron
 			}
 		}
 		const auto health = a_victim->GetActorValue(RE::ActorValue::kHealth);
-        const auto needs_health_boost = health < 1.0f;
-		const auto restored_health = -health + 1.0f;
-        const auto damaged_health = health - 1.0f;
+		const auto health_boost_magnitude = 10.0f;
+        const auto needs_health_boost = health < health_boost_magnitude;
+		const auto restored_health = -health + health_boost_magnitude;
+        const auto damaged_health = health - health_boost_magnitude;
         if (needs_health_boost)
         {
             a_victim->RestoreActorValue(RE::ActorValue::kHealth, restored_health);
         }
-        else if (health > 1.0f)
+        else if (health > health_boost_magnitude)
         {
             a_victim->DamageActorValue(RE::ActorValue::kHealth, damaged_health);
         }
