@@ -43,5 +43,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: "Acheron"
-          path: ${{github.workspace}}/build/
+          path: |
+            ${{github.workspace}}/build/**/Acheron.dll
+            ${{github.workspace}}/build/**/Acheron.pdb
           retention-days: 3
