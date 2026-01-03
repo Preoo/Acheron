@@ -199,7 +199,8 @@ namespace Acheron
 	{
         // @NOTE: getting defeated while swimming breaks most things, so just
         // skip that scenario, same thing happens when actor is in ragdoll state (animation state is left in bugged state).
-		if (a_actor->IsChild() || a_actor->IsSwimming()) {
+		// shouldn't allow defeat for sitting actors either due to issues with riding.
+		if (a_actor->IsChild() || a_actor->IsSwimming() || a_actor->IsSitting()) {
 			return false;
 		}
 		const auto furnihandle = a_actor->GetOccupiedFurniture();
