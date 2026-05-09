@@ -179,22 +179,22 @@ namespace Acheron
 				if (idcode == hpkey) {
 					if (player->HasSpell(GameForms::HunterPride)) {
 						player->RemoveSpell(GameForms::HunterPride);
-						RE::DebugNotification("$Achr_HunterPrideRemoved");
+						RE::SendHUDMessage::ShowHUDMessage("$Achr_HunterPrideRemoved");
 					} else {
 						player->AddSpell(GameForms::HunterPride);
-						RE::DebugNotification("$Achr_HunterPrideAdded");
+						RE::SendHUDMessage::ShowHUDMessage("$Achr_HunterPrideAdded");
 					}
 				} else if (idcode == surkey) {
 					const auto agr = Processing::AggressorInfo(nullptr, player);
 					if (!agr.actor) {
 						logger::info("Failed to find a valid aggressor for Surrender");
-						RE::DebugNotification("$Achr_SurrenderNoAggressor");
+						RE::SendHUDMessage::ShowHUDMessage("$Achr_SurrenderNoAggressor");
 						return EventResult::kContinue;
 					}
 					const auto memberList = Resolution::BuildMemberList(player, agr.actor, Resolution::Type::Surrender);
 					if (!Resolution::SelectQuest(Resolution::Type::Surrender, player, memberList, player->IsInCombat(), false)) {
 						logger::info("Failed to select a quest for Surrender");
-						RE::DebugNotification("$Achr_SurrenderNoQuest");
+						RE::SendHUDMessage::ShowHUDMessage("$Achr_SurrenderNoQuest");
 					}
 				}
 				break;

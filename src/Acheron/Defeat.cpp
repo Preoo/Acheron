@@ -83,13 +83,23 @@ namespace Acheron
 			}
 		}
 		const auto health = a_victim->GetActorValue(RE::ActorValue::kHealth);
-		// a_victim->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, RE::ActorValue::kHealth, -health + 0.05f);
-        // commonlib changed this method and build broke
-		a_victim->RestoreActorValue(RE::ActorValue::kHealth, -health + 0.05f);
+		const auto health_boost_magnitude = 10.0f;
+        const auto needs_health_boost = health < health_boost_magnitude;
+		const auto restored_health = -health + health_boost_magnitude;
+        const auto damaged_health = health - health_boost_magnitude;
+        if (needs_health_boost)
+        {
+            a_victim->RestoreActorValue(RE::ActorValue::kHealth, restored_health);
+        }
+        else if (health > health_boost_magnitude)
+        {
+            a_victim->DamageActorValue(RE::ActorValue::kHealth, damaged_health);
+        }
+		const auto health_after = a_victim->GetActorValue(RE::ActorValue::kHealth);
 
 		data->state.store(VictimState::Defeated);
 
-		logger::info("{:X} ({}) has been defeated", a_victim->GetFormID(), a_victim->GetDisplayFullName());
+        logger::info("{:X} ({}) has been defeated, ({}) =({})=> ({})", a_victim->GetFormID(), a_victim->GetDisplayFullName(), health, needs_health_boost ? restored_health : damaged_health, health_after);
 		Serialization::EventManager::GetSingleton()->_actordefeated.QueueEvent(a_victim);
 	}
 

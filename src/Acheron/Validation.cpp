@@ -198,8 +198,9 @@ namespace Acheron
 	bool Validation::ValidateActor(RE::Actor* a_actor)
 	{
         // @NOTE: getting defeated while swimming breaks most things, so just
-        // skip that scenario
-		if (a_actor->IsChild() || a_actor->IsSwimming()) {
+        // skip that scenario, same thing happens when actor is in ragdoll state (animation state is left in bugged state).
+		// shouldn't allow defeat for sitting actors either due to issues with riding.
+		if (a_actor->IsChild() || a_actor->IsSwimming() || a_actor->IsSitting()) {
 			return false;
 		}
 		const auto furnihandle = a_actor->GetOccupiedFurniture();
@@ -208,8 +209,10 @@ namespace Acheron
 			if (furni->HasKeyword(DA02BoethiahPillar))
 			return false;
 		}
+		// @NOTE: as alluded above, getting defeated mid-ragdoll leaves player char in bugged state.
+		// so that's the filter here. For npc's, eeh, who cares.
 		if (a_actor->IsPlayerRef()) {
-			return true;
+			return !a_actor->IsInRagdollState();
 		}
 
 		const auto base = Acheron::GetLeveledActorBase(a_actor);

@@ -558,7 +558,7 @@ namespace Acheron
 				if (Settings::bNotifyColored) {
 					base = std::format("<font color = '{}'>{}</font color>", Settings::rNotifyColor, base);
 				}
-				RE::DebugNotification(base.c_str());
+				RE::SendHUDMessage::ShowHUDMessage(base.c_str());
 			}
 			a_victim->RemoveItem(item, 1, RE::ITEM_REMOVE_REASON::kRemove, nullptr, nullptr);
 		} else if (Settings::bStripDrop) {
