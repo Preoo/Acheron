@@ -201,8 +201,7 @@ namespace Acheron
 
     void Hooks::CalcDamageOverTime(RE::Actor* a_target)
     {
-        const auto magicTarget = a_target->AsMagicTarget();
-        const auto effects = magicTarget ? magicTarget->GetActiveEffectList() : nullptr;
+        const auto effects = a_target->GetActiveEffectList();
         if (!effects)
             return;
 
@@ -491,8 +490,7 @@ namespace Acheron
 
     float Hooks::GetIncomingEffectDamage(RE::Actor* subject)
     {
-        const auto magicTarget = subject->AsMagicTarget();
-        const auto effects = magicTarget ? magicTarget->GetActiveEffectList() : nullptr;
+        const auto effects = subject->GetActiveEffectList();
         if (!effects)
             return 0.0f;
 
