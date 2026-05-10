@@ -121,12 +121,8 @@ namespace Acheron
                 return false;
         } else if (!Settings::bNPCDefeat) {
             return false;
-        } else if (!a_aggressor && !playerVictim) {
-            // if there's no aggressor I'd rather skip this event for npc who
-            // are getting killed by the traps and bugging out in the worst
-            // possible places.
-            return false;
         }
+
         if (a_aggressor) {
             if (a_aggressor->IsDead() || a_aggressor->IsInKillMove())
                 return false;
