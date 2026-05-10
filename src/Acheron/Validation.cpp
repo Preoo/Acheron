@@ -103,9 +103,10 @@ namespace Acheron
 
     bool Validation::ValidatePair(RE::Actor* a_victim, RE::Actor* a_aggressor)
     {
+        bool playerVictim = a_victim->IsPlayerRef();
         if (a_victim->IsDead() || a_victim->IsInKillMove())
             return false;
-        if (a_victim->IsPlayerRef()) {
+        if (playerVictim) {
             if (!Settings::bPlayerDefeat) {
                 return false;
             }
@@ -119,6 +120,11 @@ namespace Acheron
             if (auto ref = a_victim->GetObjectReference(); ref && ref->As<RE::BGSKeywordForm>()->HasKeywordID(0xD205E))  // ActorTypeGhost
                 return false;
         } else if (!Settings::bNPCDefeat) {
+            return false;
+        } else if (!aggressor && !playerVictim) {
+            // if there's no aggressor I'd rather skip this event for npc who
+            // are getting killed by the traps and bugging out in the worst
+            // possible places.
             return false;
         }
         if (a_aggressor) {
