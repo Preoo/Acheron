@@ -1,9 +1,7 @@
 name: Build and Release
 
 on:
-  push:
-    branches:
-      - master
+  workflow_dispatch
   pull_request:
     branches:
       - master
@@ -141,7 +139,7 @@ jobs:
     name: Build Acheron.esm
     runs-on: windows-latest
     timeout-minutes: 15
-    
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -305,7 +303,7 @@ jobs:
         with:
           name: built-esm
           path: artifacts/built-esm
-          
+
       - name: Download DLL 1.4.15 (VR)
         uses: actions/download-artifact@v4
         with:
@@ -360,7 +358,7 @@ jobs:
             Copy-Item -Path artifacts/compiled-papyrus/* -Destination (Join-Path $packRoot 'Scripts') -Recurse -Force
             Copy-Item -Path artifacts/built-esm/Acheron.esm -Destination (Join-Path $packRoot 'Acheron.esm') -Force
             Copy-Item -Path "$($target.DllRoot)/*" -Destination (Join-Path $packRoot 'SKSE/Plugins') -Recurse -Force
-            
+
             # Static dist assets (committed to repo)
             Copy-Item -Path dist/Interface -Destination (Join-Path $packRoot 'Interface') -Recurse -Force
             Copy-Item -Path dist/Source/Scripts/* -Destination (Join-Path $packRoot 'Source/Scripts') -Recurse -Force
