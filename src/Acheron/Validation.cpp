@@ -171,8 +171,8 @@ namespace Acheron
 		}
 		// @NOTE: as alluded above, getting defeated mid-ragdoll leaves player char in bugged state.
 		// so that's the filter here. For npc's, eeh, who cares.
-		if (a_actor->IsPlayerRef()) {
-			return !a_actor->IsInRagdollState();
+		if (a_actor->IsPlayerRef() && a_actor->IsInRagdollState()) {
+			return false;
 		}
 
         const auto isAllowed = [&](RE::FormID a_id, const auto& a_list) -> bool {
