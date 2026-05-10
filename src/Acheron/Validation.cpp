@@ -171,15 +171,15 @@ namespace Acheron
     {
         // @NOTE: getting defeated while swimming breaks most things, so just
         // skip that scenario, same thing happens when actor is in ragdoll state (animation state is left in bugged state).
-		// shouldn't allow defeat for sitting actors either due to issues with riding.
-		if (a_actor->IsChild() || a_actor->IsSwimming() || a_actor->IsSitting()) {
-			return false;
-		}
-		// @NOTE: as alluded above, getting defeated mid-ragdoll leaves player char in bugged state.
-		// so that's the filter here. For npc's, eeh, who cares.
-		if (a_actor->IsPlayerRef() && a_actor->IsInRagdollState()) {
-			return false;
-		}
+        // shouldn't allow defeat for sitting actors either due to issues with riding.
+        if (a_actor->IsChild() || a_actor->IsSwimming() || a_actor->IsSitting()) {
+            return false;
+        }
+        // @NOTE: as alluded above, getting defeated mid-ragdoll leaves player char in bugged state.
+        // so that's the filter here. For npc's, eeh, who cares.
+        if (a_actor->IsPlayerRef() && a_actor->IsInRagdollState()) {
+            return false;
+        }
 
         const auto isAllowed = [&](RE::FormID a_id, const auto& a_list) -> bool {
             const auto f = [&](const ExclusionData& data) {

@@ -87,15 +87,15 @@ namespace Acheron
     }
 
 <<<<<<< HEAD
-	bool IsMovementControlsEnabled(RE::ControlMap* controlMap)
-	{
+    bool IsMovementControlsEnabled(RE::ControlMap* controlMap)
+    {
 #ifdef SKYRIM_SUPPORT_AE
-		if (REL::Module::get().version().compare(SKSE::RUNTIME_SSE_1_6_1130) == std::strong_ordering::less) {
-			return IsControlsFlagEnabled_ae_pre1130(controlMap, RE::ControlMap::UEFlag::kMovement);
-		}
+        if (REL::Module::get().version().compare(SKSE::RUNTIME_SSE_1_6_1130) == std::strong_ordering::less) {
+            return IsControlsFlagEnabled_ae_pre1130(controlMap, RE::ControlMap::UEFlag::kMovement);
+        }
 #endif
-		return controlMap->IsMovementControlsEnabled();
-	}
+        return controlMap->IsMovementControlsEnabled();
+    }
 =======
     bool UsesHunterPride(const RE::Actor* a_actor)
     {

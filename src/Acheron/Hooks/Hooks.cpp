@@ -403,9 +403,9 @@ namespace Acheron
         // non-immersive reload. Traps such as spike trap in a hole is one
         // example of this. Also this would mess up the fall death for "diving"
         // mod.
-		// if (dmg <= 0.0f)
-		if (true)
-			return dmg;
+        // if (dmg <= 0.0f)
+        if (true)
+            return dmg;
         float adj_dmg = dmg;
         AdjustByDifficultyMult(adj_dmg, a_this->IsPlayerRef(), MoveFinish);
         const float hp = a_this->GetActorValue(RE::ActorValue::kHealth);
