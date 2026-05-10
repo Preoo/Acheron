@@ -1,59 +1,70 @@
 #pragma once
 
+#include "Conditions/Conditional.h"
+
 namespace Acheron
 {
-	enum VTarget
-	{
-		Victim = 0,
-		Assailant = 1,
-		Either = 2,
+    enum VTarget
+    {
+        Victim = 0,
+        Assailant = 1,
+        Either = 2,
 
-		Total
-	};
+        Total
+    };
 
-	class Validation
-	{
-	public:
-		static void Initialize();
+    struct ExclusionData
+    {
+        ExclusionData(RE::FormID a_formID, const Conditions::Conditional& a_conditional) :
+          formID(a_formID), conditional(a_conditional) {}
+        ~ExclusionData() = default;
 
-		/// @brief Check that the mod is considered enabled in current location
-		/// @return if attacks may be processed
-		_NODISCARD static bool CanProcessDamage();
+        [[nodiscard]] bool IsExcluded(RE::FormID a_targetID, RE::TESObjectREFR* a_conditionRef) const;
 
-		/// @brief Validate both actors and tell whether or not victim may be defeated
-		/// @param a_victim The actor being attacked
-		/// @param a_aggressor The actor attacking
-		/// @return if victim may be defeated by aggressor
-		_NODISCARD static bool ValidatePair(RE::Actor* a_victim, RE::Actor* a_aggressor);
+      private:
+        RE::FormID formID;
+        Conditions::Conditional conditional;
+    };
 
-		/// @brief Validate whether an effect may be used rescue an actor
-		/// @param a_effect The base effect being applied
-		/// @return if the affect may be used to rescue an actor
-		_NODISCARD static bool AllowRescueEffect(RE::EffectSetting* a_effect);
+    class Validation
+    {
+      public:
+        static void Initialize();
 
-		/// @brief Validate whether a detrimental affect may be applied to a defeated actor
-		/// @param a_effect The base effect being applied
-		/// @return if the affect may be applied to a defeated actor
-		_NODISCARD static bool AllowDetrimentalEffect(RE::EffectSetting* a_effect);
+        /// @brief Check that the mod is considered enabled in current location
+        /// @return if attacks may be processed
+        _NODISCARD static bool CanProcessDamage();
 
-		/// @brief Ensure that the player can be teleported away from their current location
-		/// @return if teleporting the player is permitted
-		_NODISCARD static bool AllowTeleport();
+        /// @brief Validate both actors and tell whether or not victim may be defeated
+        /// @param a_victim The actor being attacked
+        /// @param a_aggressor The actor attacking
+        /// @return if victim may be defeated by aggressor
+        _NODISCARD static bool ValidatePair(RE::Actor* a_victim, RE::Actor* a_aggressor);
 
-	private:
-		static bool ValidateActor(RE::Actor* a_actor);
+        /// @brief Validate whether an effect may be used rescue an actor
+        /// @param a_effect The base effect being applied
+        /// @return if the affect may be used to rescue an actor
+        _NODISCARD static bool AllowRescueEffect(RE::EffectSetting* a_effect);
 
-		static bool CheckVictimID(RE::FormID a_formid);												 // Conditional exclusion of some unique actor ids
-		static bool CheckAssailantID(RE::FormID a_formid);										 // Conditional exclusion of some unique actor ids
-		static bool CheckExclusion(VTarget a_validation, RE::Actor* a_actor);	 // Check actor for exclusion in arrays
+        /// @brief Validate whether a detrimental affect may be applied to a defeated actor
+        /// @param a_effect The base effect being applied
+        /// @return if the affect may be applied to a defeated actor
+        _NODISCARD static bool AllowDetrimentalEffect(RE::EffectSetting* a_effect);
 
-		static inline std::vector<RE::FormID> exclLocAll{};									// Always disabled locations
-		static inline std::vector<RE::FormID> exclLocTp{};									// Teleport only disabled locations
-		static inline std::vector<RE::FormID> exclMagicEffect{};				// Excluded Magic Effects
-		static inline std::vector<RE::FormID> exclNPC[VTarget::Total];			// Excluded Actor Bases
-		static inline std::vector<RE::FormID> exclRef[VTarget::Total];			// Excluded object refs
-		static inline std::vector<RE::FormID> exclRace[VTarget::Total];			// Excluded races
-		static inline std::vector<RE::FormID> exclFaction[VTarget::Total];	// Excluded factions
-	};
+        /// @brief Ensure that the player can be teleported away from their current location
+        /// @return if teleporting the player is permitted
+        _NODISCARD static bool AllowTeleport();
 
-}	 // namespace Acheron
+      private:
+        static bool CheckExclusion(VTarget a_validation, RE::Actor* a_actor);  // Check actor for exclusion in arrays
+
+        static inline std::vector<ExclusionData> exclLocAll{};                               // Always disabled locations
+        static inline std::vector<ExclusionData> exclLocTp{};                                // Teleport only disabled locations
+        static inline std::vector<ExclusionData> exclMagicEffect{};                          // Excluded Magic Effects
+        static inline std::array<std::vector<ExclusionData>, VTarget::Total> exclNPC{};      // Excluded Actor Bases
+        static inline std::array<std::vector<ExclusionData>, VTarget::Total> exclRef{};      // Excluded object refs
+        static inline std::array<std::vector<ExclusionData>, VTarget::Total> exclRace{};     // Excluded races
+        static inline std::array<std::vector<ExclusionData>, VTarget::Total> exclFaction{};  // Excluded factions
+    };
+
+}  // namespace Acheron

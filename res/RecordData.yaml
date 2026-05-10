@@ -1,0 +1,24 @@
+SpriggitSource:
+  PackageName: Spriggit.Yaml.Skyrim
+  Version: 0.40
+ModKey: Acheron.esm
+GameRelease: SkyrimSE
+ModHeader:
+  Flags:
+  - Master
+  - Small
+  Author: KrisV777
+  Description: A SKSE driven/native Death Alternative Framework, to create custom game over scenarios next to the vanilla "reload save" one.
+  MasterReferences:
+  - Master: Skyrim.esm
+    FileSize: 0
+  - Master: Update.esm
+    FileSize: 0
+  - Master: Dawnguard.esm
+    FileSize: 0
+  - Master: HearthFires.esm
+    FileSize: 0
+  - Master: Dragonborn.esm
+    FileSize: 0
+  INTV: 1
+  INCC: 0
